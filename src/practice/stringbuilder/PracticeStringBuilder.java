@@ -9,19 +9,19 @@ public final class PracticeStringBuilder implements java.io.Serializable {
     private int count;
     private final Stack<Memento> history;
 
-    PracticeStringBuilder(){
+    public PracticeStringBuilder(){
         this.history = new Stack<>();
         this.value = new char[16];
         this.count = 0;
     }
 
-    PracticeStringBuilder(int capacity){
+    public PracticeStringBuilder(int capacity){
         this.value = new char[capacity];
         this.history = new Stack<>();
         this.count = 0;
     }
 
-    PracticeStringBuilder(String str){
+    public PracticeStringBuilder(String str){
         this.history = new Stack<>();
         append(str);
     }
@@ -56,6 +56,10 @@ public final class PracticeStringBuilder implements java.io.Serializable {
         return this;
     }
 
+    @Override
+    public String toString() {
+        return Arrays.toString(value);
+    }
 
     private record Memento(char[] value, int count) {
     }
