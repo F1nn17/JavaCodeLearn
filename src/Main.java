@@ -102,13 +102,63 @@ public class Main {
 //        );
 //        System.out.println("End Orders");
 
+//        System.out.println("Test ConcurrentBank");
+//        ConcurrentBank bank = new ConcurrentBank();
+//
+//        // Создание счетов
+//        BankAccount account1 = bank.createAccount(1000);
+//        BankAccount account2 = bank.createAccount(500);
+//
+//        // Перевод между счетами
+//        Thread transferThread1 = new Thread(() -> bank.transfer(account1, account2, 200));
+//        Thread transferThread2 = new Thread(() -> bank.transfer(account2, account1, 100));
+//
+//        transferThread1.start();
+//        transferThread2.start();
+//
+//        try {
+//            transferThread1.join();
+//            transferThread2.join();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        System.out.println("Total balance: " + bank.getTotalBalance());
+//        System.out.println("End ConcurrentBank");
+//
+//        System.out.println("Test ComplexTaskExecutor");
+//        ComplexTaskExecutor taskExecutor = new ComplexTaskExecutor(5); // Количество задач для выполнения
+//
+//        Runnable testRunnable = () -> {
+//            System.out.println(Thread.currentThread().getName() + " started the test.");
+//
+//            // Выполнение задач
+//            taskExecutor.executeTasks(5);
+//
+//            System.out.println(Thread.currentThread().getName() + " completed the test.");
+//        };
+//
+//        Thread thread1 = new Thread(testRunnable, "TestThread-1");
+//        Thread thread2 = new Thread(testRunnable, "TestThread-2");
+//
+//        thread1.start();
+//        thread2.start();
+//
+//        try {
+//            thread1.join();
+//            thread2.join();
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
+//        System.out.println("End ComplexTaskExecutor");
         System.out.println("Test BlockingQueue");
-        BlockingQueue<Integer> queue = new BlockingQueue<>(5);
+        BlockingQueue<Integer> blockingQueue = new BlockingQueue<>(5);
+
         Thread producer = new Thread(() -> {
             try {
-                for (int i = 0; i < 10; i++) {
-                    System.out.println("Producing " + i);
-                    queue.enqueue(i);
+                for (int i = 1; i <= 10; i++) {
+                    System.out.println("Producing: " + i);
+                    blockingQueue.enqueue(i);
                     Thread.sleep(1000);
                 }
             } catch (InterruptedException e) {
@@ -116,75 +166,21 @@ public class Main {
             }
         });
 
+
         Thread consumer = new Thread(() -> {
             try {
-                for (int i = 0; i < 10; i++) {
-                    Integer item = queue.dequeue();
-                    System.out.println("Consuming " + item);
-                    Thread.sleep(2000);
+                for (int i = 1; i <= 10; i++) {
+                    int item = blockingQueue.dequeue();
+                    System.out.println("Consuming: " + item);
                 }
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
         });
+
         producer.start();
         consumer.start();
-        try {
-            producer.join();
-            consumer.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         System.out.println("End BlockingQueue");
 
-        System.out.println("Test ConcurrentBank");
-        ConcurrentBank bank = new ConcurrentBank();
-
-        // Создание счетов
-        BankAccount account1 = bank.createAccount(1000);
-        BankAccount account2 = bank.createAccount(500);
-
-        // Перевод между счетами
-        Thread transferThread1 = new Thread(() -> bank.transfer(account1, account2, 200));
-        Thread transferThread2 = new Thread(() -> bank.transfer(account2, account1, 100));
-
-        transferThread1.start();
-        transferThread2.start();
-
-        try {
-            transferThread1.join();
-            transferThread2.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        System.out.println("Total balance: " + bank.getTotalBalance());
-        System.out.println("End ConcurrentBank");
-
-        System.out.println("Test ComplexTaskExecutor");
-        ComplexTaskExecutor taskExecutor = new ComplexTaskExecutor(5); // Количество задач для выполнения
-
-        Runnable testRunnable = () -> {
-            System.out.println(Thread.currentThread().getName() + " started the test.");
-
-            // Выполнение задач
-            taskExecutor.executeTasks(5);
-
-            System.out.println(Thread.currentThread().getName() + " completed the test.");
-        };
-
-        Thread thread1 = new Thread(testRunnable, "TestThread-1");
-        Thread thread2 = new Thread(testRunnable, "TestThread-2");
-
-        thread1.start();
-        thread2.start();
-
-        try {
-            thread1.join();
-            thread2.join();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
-        System.out.println("End ComplexTaskExecutor");
     }
 }
